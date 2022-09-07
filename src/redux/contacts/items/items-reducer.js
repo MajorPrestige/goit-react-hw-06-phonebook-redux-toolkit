@@ -1,13 +1,9 @@
-// import { createReducer } from '@reduxjs/toolkit';
-// import { addContact, deleteContact } from 'redux/contacts/items/items-actions';
-
-// const itemsReducer = createReducer([], {
-//   [addContact.type]: (store, { payload }) => {
-//     store.push(payload);
-//   },
-// });
-
-import { ADD_CONTACT, DELETE_CONTACT, DELETE_ALL_CONTACTS } from 'redux/types';
+import { createReducer } from '@reduxjs/toolkit';
+import {
+  addContact,
+  deleteContact,
+  deleteCheckedContacts,
+} from 'redux/contacts/items/items-actions';
 
 const initialStore = [
   {
@@ -22,28 +18,22 @@ const initialStore = [
   },
 ];
 
-const items = (store = initialStore, { type, payload }) => {
-  switch (type) {
-    case ADD_CONTACT:
-      const duplicateContact = store.find(
-        contact => contact.number === payload.number
-      );
+const items = createReducer(initialStore, {
+  [addContact]: (store, { payload }) => {
+    const duplicateContact = store.find(
+      contact => contact.number === payload.number
+    );
 
-      if (duplicateContact?.number === payload.number) {
-        alert(`Number:${payload.number} is already in your contacts`);
-        return store;
-      }
-
-      return [payload, ...store];
-
-    case DELETE_CONTACT:
-      return store.filter(el => el.id !== payload);
-
-    case DELETE_ALL_CONTACTS:
-      return payload;
-    default:
+    if (duplicateContact?.number === payload.number) {
+      alert(`Number:${payload.number} is already in your contacts`);
       return store;
-  }
-};
+    }
+
+    store.push(payload);
+  },
+  [deleteContact]: (store, { payload }) =>
+    store.filter(el => el.id !== payload),
+  [deleteCheckedContacts]: (_, { payload }) => payload,
+});
 
 export default items;

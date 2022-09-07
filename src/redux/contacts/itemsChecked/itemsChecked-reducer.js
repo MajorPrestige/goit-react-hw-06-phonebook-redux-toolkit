@@ -1,20 +1,18 @@
-import { CONTACTS_TO_DELETE, CLEAR_CHECKED_CONTACTS } from 'redux/types';
+import { createReducer } from '@reduxjs/toolkit';
+import {
+  toggleCheckedContact,
+  clearCheckedContacts,
+} from './itemsChecked-actions';
 
-const itemsChecked = (store = [], { type, payload }) => {
-  switch (type) {
-    case CONTACTS_TO_DELETE:
-      if (store.includes(payload)) {
-        return store.filter(el => el !== payload);
-      }
+const itemsChecked = createReducer([], {
+  [toggleCheckedContact]: (store, { payload }) => {
+    if (store.includes(payload)) {
+      return store.filter(el => el !== payload);
+    }
 
-      return [...store, payload];
-
-    case CLEAR_CHECKED_CONTACTS:
-      return payload;
-
-    default:
-      return store;
-  }
-};
+    store.push(payload);
+  },
+  [clearCheckedContacts]: (_, { payload }) => payload,
+});
 
 export default itemsChecked;

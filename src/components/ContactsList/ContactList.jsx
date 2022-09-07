@@ -2,11 +2,11 @@ import ContactsItem from 'components/ContactsItem/ContactsItem';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   deleteContact,
-  deleteAllContact,
+  deleteCheckedContacts,
 } from 'redux/contacts/items/items-actions';
 import {
-  toDelete,
-  clearChecked,
+  toggleCheckedContact,
+  clearCheckedContacts,
 } from 'redux/contacts/itemsChecked/itemsChecked-actions';
 import s from './ContactList.module.css';
 import { getFilteredContacts } from 'redux/contacts/items/items-selectors';
@@ -23,7 +23,7 @@ const ContactLists = () => {
 
   const handleCheckboxChange = e => {
     const contactId = e.target.name;
-    dispatch(toDelete(contactId));
+    dispatch(toggleCheckedContact(contactId));
   };
 
   const handleDeleteAllClick = () => {
@@ -31,8 +31,8 @@ const ContactLists = () => {
       ({ id }) => !contactsToDelete.includes(id)
     );
 
-    dispatch(deleteAllContact(contactsAfterDeletion));
-    dispatch(clearChecked([]));
+    dispatch(deleteCheckedContacts(contactsAfterDeletion));
+    dispatch(clearCheckedContacts([]));
   };
 
   return (

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { filterContacts } from 'redux/contacts/filter/filter-actions';
+import { setFilter } from 'redux/contacts/filter/filter-actions';
 
 import s from './ContactsSearch.module.css';
 
@@ -9,7 +9,7 @@ const ContactsSearch = () => {
   const dispatch = useDispatch();
 
   const filterContact = ({ target }) => {
-    dispatch(filterContacts(target.value));
+    dispatch(setFilter(target.value));
   };
 
   return (
